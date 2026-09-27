@@ -1,0 +1,56 @@
+/* src/styles/App.css */
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.app-main-content {
+  flex: 1;
+}
+
+/* ================== FOOTER STYLES ================== */
+.site-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 24px 20px;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.footer-brand {
+  font-size: 13.5px;
+  color: #1e293b;
+  margin-bottom: 3px;
+}
+
+.footer-course {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.footer-team {
+  font-size: 12.5px;
+  color: #475569;
+}
+
+@media (max-width: 640px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
