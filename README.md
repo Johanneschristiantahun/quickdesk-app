@@ -49,8 +49,6 @@
 | **`user`** | `user123` | **`user`** (Mahasiswa) | Johannes Christian Tahun | Mengajukan tiket baru, melihat riwayat tiket miliknya |
 | **`aldrich`** | `user123` | **`user`** (Mahasiswa) | Aldrich Taqi Marvel | Mengajukan tiket baru, melihat riwayat tiket miliknya |
 
-*Tersedia tombol "Quick Login" pada halaman Login untuk mempermudah pergantian role dalam 1-klik saat sesi demo langsung.*
-
 ---
 
 ## 🛠️ Arsitektur & Struktur Folder Komponen
