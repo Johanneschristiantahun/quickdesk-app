@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Reusable Metric StatCard Component
- * Enterprise design: High data density, crisp typography, clean SVG monochrome icon.
+ * Menampilkan ringkasan metrik kuantitatif tiket
  */
 export default function StatCard({ title, value, icon, subtitle }) {
   return (

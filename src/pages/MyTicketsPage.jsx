@@ -34,7 +34,7 @@ export default function MyTicketsPage() {
         <span className="breadcrumb-current">{isAdmin ? 'Seluruh Antrean Tiket' : 'Riwayat Tiket'}</span>
       </nav>
 
-      {/* Enterprise Success Notification Banner */}
+      {/* Banner Notifikasi Sukses */}
       {successMessage && (
         <div className="alert-success-banner" role="status">
           <CheckCircle2 size={18} strokeWidth={2.2} className="success-icon-svg" />

@@ -37,7 +37,7 @@ function AppContent() {
           {/* Rute Awal: Redirect ke Dashboard */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-          {/* Rute Terproteksi: Dashboard (Kriteria B2 & B3) */}
+          {/* Rute Terproteksi: Dashboard */}
           <Route
             path="/dashboard"
             element={
@@ -47,7 +47,7 @@ function AppContent() {
             }
           />
 
-          {/* Rute Terproteksi: Form Buat Tiket (Kriteria B2 & B4) - Khusus Role User/Pelapor */}
+          {/* Rute Terproteksi: Form Buat Tiket (Khusus Role User / Pelapor) */}
           <Route
             path="/create-ticket"
             element={
@@ -57,7 +57,7 @@ function AppContent() {
             }
           />
 
-          {/* Rute Terproteksi: Form Output / Riwayat Tiket (Kriteria B2 & B5) */}
+          {/* Rute Terproteksi: Riwayat Tiket / Form Output */}
           <Route
             path="/my-tickets"
             element={
@@ -67,12 +67,12 @@ function AppContent() {
             }
           />
 
-          {/* Rute 404: Tangani URL yang tidak cocok (Kriteria B2) */}
+          {/* Fallback 404 Not Found */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 
-      {/* Footer Semantik */}
+      {/* Footer Navigasi */}
       <Footer />
     </div>
   );
@@ -80,7 +80,7 @@ function AppContent() {
 
 /**
  * Entry Point Utama Aplikasi
- * Menggunakan HashRouter untuk memastikan kompatibilitas penuh GitHub Pages tanpa 404 saat refresh (Kriteria D2)
+ * Menggunakan HashRouter untuk kompatibilitas routing statis
  */
 export default function App() {
   return (

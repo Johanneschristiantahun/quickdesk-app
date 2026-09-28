@@ -3,9 +3,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * Komponen Pembungkus Route Terproteksi (Protected Route)
- * Sesuai Kriteria Rubrik B2:
- * "inner pages cannot be opened without logging in."
+ * Komponen Pembungkus Route Terproteksi (Route Guard)
+ * Mencegah akses ke halaman internal tanpa status otentikasi aktif
  */
 export default function ProtectedRoute({ children, adminOnly = false, userOnly = false }) {
   const { currentUser, isAuthenticated, isAdmin } = useAuth();

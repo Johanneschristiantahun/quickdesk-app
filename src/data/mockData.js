@@ -1,7 +1,6 @@
 /**
  * src/data/mockData.js
- * Master mock data untuk sistem QuickDesk (Enterprise IT Helpdesk).
- * Mengikuti standar penamaan industri dan data density fungsional.
+ * Mock data untuk sistem QuickDesk IT Helpdesk.
  */
 
 export const MOCK_USERS = [

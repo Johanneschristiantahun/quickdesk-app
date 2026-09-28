@@ -98,7 +98,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Subtitle Footnote Kredensial Resmi (Bukan Tombol Shortcut Pemalas) */}
+        {/* Informasi Akun Demo */}
         <div className="auth-footnote">
           <p className="footnote-title">Informasi Akun Otorisasi:</p>
           <ul className="footnote-list">

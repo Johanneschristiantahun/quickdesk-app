@@ -32,7 +32,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-container">
-      {/* Enterprise Header Section */}
+      {/* Header Halaman */}
       <div className="page-header-block">
         <div className="header-meta">
           <div className="header-badge-row">
