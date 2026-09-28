@@ -47,11 +47,11 @@ function AppContent() {
             }
           />
 
-          {/* Rute Terproteksi: Form Buat Tiket (Kriteria B2 & B4) */}
+          {/* Rute Terproteksi: Form Buat Tiket (Kriteria B2 & B4) - Khusus Role User/Pelapor */}
           <Route
             path="/create-ticket"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userOnly>
                 <CreateTicketPage />
               </ProtectedRoute>
             }

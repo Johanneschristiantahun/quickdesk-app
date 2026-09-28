@@ -7,8 +7,8 @@ import { useAuth } from '../context/AuthContext';
  * Sesuai Kriteria Rubrik B2:
  * "inner pages cannot be opened without logging in."
  */
-export default function ProtectedRoute({ children, adminOnly = false }) {
-  const { currentUser, isAuthenticated } = useAuth();
+export default function ProtectedRoute({ children, adminOnly = false, userOnly = false }) {
+  const { currentUser, isAuthenticated, isAdmin } = useAuth();
   const location = useLocation();
 
   // Jika user belum login, lempar kembali ke halaman login
@@ -16,8 +16,13 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Jika halaman hanya khusus role admin dan user yang login bukan admin
-  if (adminOnly && currentUser.role !== 'admin') {
+  // Jika rute khusus admin dan pengguna bukan admin
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Jika rute khusus user (pelapor) dan pengguna adalah admin
+  if (userOnly && isAdmin) {
     return <Navigate to="/dashboard" replace />;
   }
 

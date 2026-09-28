@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Server, AlertCircle, ArrowRight, Lock, User as UserIcon } from 'lucide-react';
 import '../styles/Form.css';
@@ -16,7 +16,7 @@ export default function LoginPage() {
   const redirectTarget = location.state?.from?.pathname || '/dashboard';
 
   if (isAuthenticated) {
-    navigate('/dashboard', { replace: true });
+    return <Navigate to={redirectTarget} replace />;
   }
 
   const handleSubmit = (e) => {
