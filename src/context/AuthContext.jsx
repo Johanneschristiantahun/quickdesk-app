@@ -43,7 +43,7 @@ export function AuthProvider({ children }) {
       setLoginError('');
       return true;
     } else {
-      setLoginError('Username atau password salah! Silakan coba lagi.');
+      setLoginError('Kredensial tidak valid. Silakan periksa kembali username dan kata sandi Anda.');
       return false;
     }
   };
