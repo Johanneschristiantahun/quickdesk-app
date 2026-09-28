@@ -1,4 +1,4 @@
-# QuickDesk — Internal IT Support & Helpdesk Portal
+# QuickDesk | Internal IT Support & Helpdesk Portal
 > **Proyek Ujian Tengah Semester (UTS) Week 7**  
 > Mata Kuliah: **Web & Mobile Application Development** (Tahun Akademik 2026)  
 > **Kelompok 12**
