@@ -1,97 +1,104 @@
 /**
  * src/data/mockData.js
- * Pusat penyimpanan data hardcoded sistem QuickDesk.
- * Sesuai Kriteria Rubrik C3:
- * "Data in a separate file as an array of objects with ids; components read from a single source."
+ * Master mock data untuk sistem QuickDesk (Enterprise IT Helpdesk).
+ * Mengikuti standar penamaan industri dan data density fungsional.
  */
 
-// 1. Data Akun Hardcoded (Minimal 2 Role: 'admin' dan 'user')
 export const MOCK_USERS = [
   {
-    id: 'user-01',
+    id: 'usr_admin',
     username: 'admin',
     password: 'admin123',
-    name: 'Budi Santoso, S.Kom',
-    role: 'admin', // Role IT Admin
-    department: 'IT Infrastructure & Support',
-    email: 'admin@quickdesk.campus.ac.id'
+    name: 'Budi Santoso',
+    role: 'admin',
+    department: 'IT Infrastructure & Operations',
+    email: 'budi.santoso@campus.ac.id'
   },
   {
-    id: 'user-02',
+    id: 'usr_user_1',
     username: 'user',
     password: 'user123',
     name: 'Johannes Christian Tahun',
-    role: 'user', // Role Mahasiswa / Karyawan
-    department: 'Computer Science (Kelompok 12)',
-    email: 'johannes@student.campus.ac.id'
+    role: 'user',
+    department: 'Computer Science',
+    email: 'johannes.tahun@student.campus.ac.id'
   },
   {
-    id: 'user-03',
+    id: 'usr_user_2',
     username: 'aldrich',
     password: 'user123',
     name: 'Aldrich Taqi Marvel',
     role: 'user',
-    department: 'Computer Science (Kelompok 12)',
-    email: 'aldrich@student.campus.ac.id'
+    department: 'Computer Science',
+    email: 'aldrich.marvel@student.campus.ac.id'
   }
 ];
 
-// 2. Daftar Kategori & Prioritas Resmi
 export const TICKET_CATEGORIES = [
-  'Hardware (Perangkat Keras)',
-  'Software (Aplikasi & OS)',
-  'Network (Jaringan & Wi-Fi)',
-  'Account & Access (Akun & Portal)'
+  'Hardware',
+  'Software',
+  'Network',
+  'Access & Account'
 ];
 
-export const TICKET_PRIORITIES = ['Low', 'Medium', 'High'];
+export const TICKET_PRIORITIES = ['LOW', 'MEDIUM', 'HIGH'];
 
-export const TICKET_STATUSES = ['Open', 'In Progress', 'Resolved'];
+export const TICKET_STATUSES = ['OPEN', 'IN_PROGRESS', 'RESOLVED'];
 
-// 3. Data Tiket Awal (Initial Tickets dengan ID Unik)
 export const INITIAL_TICKETS = [
   {
     id: 'TCK-101',
-    title: 'Wi-Fi Lab Komputer Gedung B Sering Putus',
-    category: 'Network (Jaringan & Wi-Fi)',
-    priority: 'High',
-    status: 'Open',
-    description: 'Koneksi Wi-Fi SSID Campus_Secure di lantai 2 sering request timed out saat sesi praktikum berlangsung.',
+    title: 'Koneksi Wi-Fi SSID Campus_Secure Sering Request Timeout',
+    category: 'Network',
+    priority: 'HIGH',
+    status: 'OPEN',
+    description: 'Koneksi nirkabel pada Access Point lantai 2 Gedung B mengalami packet loss di atas 45% saat sesi perkuliahan berlangsung.',
     authorUsername: 'user',
     authorName: 'Johannes Christian Tahun',
     createdAt: '2026-09-26 09:30'
   },
   {
     id: 'TCK-102',
-    title: 'Proyektor Ruang 304 Warna Menguning',
-    category: 'Hardware (Perangkat Keras)',
-    priority: 'Medium',
-    status: 'In Progress',
-    description: 'Tampilan kabel VGA/HDMI proyektor menghasilkan bias kuning pekat sehingga slide presentasi tidak terbaca jelas.',
+    title: 'Proyektor Ruang 304 Mengalami Distorsi Warna Lampu',
+    category: 'Hardware',
+    priority: 'MEDIUM',
+    status: 'IN_PROGRESS',
+    description: 'Output proyeksi menghasilkan bias kuning pekat melalui port HDMI maupun VGA. Perlu pengecekan kabel atau penggantian unit lampu proyektor.',
     authorUsername: 'aldrich',
     authorName: 'Aldrich Taqi Marvel',
     createdAt: '2026-09-26 11:15'
   },
   {
     id: 'TCK-103',
-    title: 'Gagal Login Portal Akademik Error 500',
-    category: 'Account & Access (Akun & Portal)',
-    priority: 'High',
-    status: 'Resolved',
-    description: 'Saat memasukkan NIM, portal menampilkan Internal Server Error. Reset sesi akun telah berhasil diproses oleh IT Support.',
+    title: 'Kegagalan Sinkronisasi Autentikasi Portal Akademik (HTTP 500)',
+    category: 'Access & Account',
+    priority: 'HIGH',
+    status: 'RESOLVED',
+    description: 'Sesi login mahasiswa terputus akibat kendala cache token JWT. Layanan IAM server telah di-restart dan sesi pengguna dipulihkan.',
     authorUsername: 'user',
     authorName: 'Johannes Christian Tahun',
     createdAt: '2026-09-25 14:00'
   },
   {
     id: 'TCK-104',
-    title: 'Update Lisensi MATLAB Lab Komputasi',
-    category: 'Software (Aplikasi & OS)',
-    priority: 'Low',
-    status: 'Resolved',
-    description: 'Lisensi kampus tahunan MATLAB versi R2025b perlu di-reactivate pada 30 unit komputer PC Lab Data Science.',
+    title: 'Aktivasi Lisensi MATLAB R2025b di PC Lab Komputasi',
+    category: 'Software',
+    priority: 'LOW',
+    status: 'RESOLVED',
+    description: 'Pembaruan file lisensi jaringan tahunan untuk 30 workstation di Lab Sains Data telah berhasil didistribusikan via group policy.',
     authorUsername: 'aldrich',
     authorName: 'Aldrich Taqi Marvel',
     createdAt: '2026-09-24 16:45'
+  },
+  {
+    id: 'TCK-105',
+    title: 'Workstation PC 08 Lab 1 Mengalami Kernel Panic saat Boot',
+    category: 'Hardware',
+    priority: 'HIGH',
+    status: 'OPEN',
+    description: 'Perangkat PC 08 mengalami freeze saat inisialisasi BIOS. Indikasi kendala pada modul RAM slot 2 atau thermal throttling.',
+    authorUsername: 'user',
+    authorName: 'Johannes Christian Tahun',
+    createdAt: '2026-09-27 08:20'
   }
 ];

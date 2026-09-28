@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { 
+  Server, 
+  LayoutDashboard, 
+  PlusCircle, 
+  ListFilter, 
+  ShieldCheck, 
+  User, 
+  LogOut 
+} from 'lucide-react';
 import '../styles/Navbar.css';
 
-/**
- * Komponen Navigasi Utama (Navbar)
- * Sesuai Kriteria Rubrik B2 & C2:
- * - Menggunakan elemen semantik <header> dan <nav>
- * - Navigasi menggunakan <NavLink> / <Link> dari React Router
- * - Menu berbeda berdasarkan role yang sedang login (Permission Matrix)
- * - Menampilkan status role pengguna dan tombol Logout
- */
 export default function Navbar() {
   const { currentUser, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -23,10 +24,15 @@ export default function Navbar() {
   return (
     <header className="site-header">
       <div className="header-container">
-        {/* Brand / Logo */}
-        <Link to="/dashboard" className="brand-logo">
-          <span className="brand-icon">Q</span>
-          <span className="brand-name">QuickDesk</span>
+        {/* Brand System Logo */}
+        <Link to="/dashboard" className="brand-logo" aria-label="QuickDesk Home">
+          <span className="brand-icon">
+            <Server size={18} strokeWidth={2.2} />
+          </span>
+          <div className="brand-text-block">
+            <span className="brand-name">QuickDesk</span>
+            <span className="brand-sub">IT Helpdesk Portal</span>
+          </div>
         </Link>
 
         {/* Semantic Navigation Menu */}
@@ -37,18 +43,19 @@ export default function Navbar() {
                 to="/dashboard"
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
               >
-                Dashboard
+                <LayoutDashboard size={15} strokeWidth={2} />
+                <span>Dashboard</span>
               </NavLink>
             </li>
 
-            {/* Menu Khusus Role User (Sesuai Permission Matrix A1) */}
             {!isAdmin && (
               <li>
                 <NavLink
                   to="/create-ticket"
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
                 >
-                  + Buat Tiket Baru
+                  <PlusCircle size={15} strokeWidth={2} />
+                  <span>Buat Tiket</span>
                 </NavLink>
               </li>
             )}
@@ -58,28 +65,40 @@ export default function Navbar() {
                 to="/my-tickets"
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
               >
-                {isAdmin ? 'Semua Tiket' : 'Tiket Saya'}
+                <ListFilter size={15} strokeWidth={2} />
+                <span>{isAdmin ? 'Semua Tiket' : 'Tiket Saya'}</span>
               </NavLink>
             </li>
           </ul>
         </nav>
 
-        {/* User Info & Logout Button */}
+        {/* User Identity & Logout Button */}
         <div className="user-profile-section">
           <div className="user-info">
             <span className="user-name">{currentUser?.name || currentUser?.username}</span>
-            <span className={`role-badge ${isAdmin ? 'badge-admin' : 'badge-user'}`}>
-              {isAdmin ? '🛡️ IT Admin' : '👤 Mahasiswa / User'}
-            </span>
+            <div className={`role-pill ${isAdmin ? 'role-admin' : 'role-user'}`}>
+              {isAdmin ? (
+                <>
+                  <ShieldCheck size={12} strokeWidth={2.2} />
+                  <span>IT ADMIN</span>
+                </>
+              ) : (
+                <>
+                  <User size={12} strokeWidth={2.2} />
+                  <span>USER</span>
+                </>
+              )}
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleLogout}
             className="btn-logout"
-            title="Keluar dari akun"
+            title="Keluar dari sesi"
           >
-            Logout
+            <LogOut size={14} strokeWidth={2} />
+            <span>Keluar</span>
           </button>
         </div>
       </div>

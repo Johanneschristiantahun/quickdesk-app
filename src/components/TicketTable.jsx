@@ -1,131 +1,173 @@
 import React, { useState } from 'react';
+import { 
+  Search, 
+  Inbox, 
+  Calendar, 
+  Filter, 
+  ArrowUpDown, 
+  User as UserIcon,
+  Tag
+} from 'lucide-react';
+import { TICKET_CATEGORIES } from '../data/mockData';
 
-/**
- * Komponen Tabel Tiket Reusable
- * Sesuai Kriteria Rubrik:
- * - B3: Data rendered from an array with map() and unique keys; conditional rendering; has an empty state ("no data yet")
- * - C1: UI split into components reused through props
- * - C2: Semantic table markup (table, thead, tbody, tr, th, td)
- */
 export default function TicketTable({ tickets, isAdmin = false, onStatusChange }) {
-  // State untuk filter status & pencarian
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [filterCategory, setFilterCategory] = useState('ALL');
+  const [filterPriority, setFilterPriority] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Filter tiket berdasarkan status dan kata kunci pencarian
+  // Filter tiket multi-kriteria secara fungsional
   const filteredTickets = tickets.filter((ticket) => {
     const matchStatus =
-      filterStatus === 'ALL' ? true : ticket.status.toLowerCase() === filterStatus.toLowerCase();
+      filterStatus === 'ALL' || ticket.status === filterStatus;
+    const matchCategory =
+      filterCategory === 'ALL' || ticket.category === filterCategory;
+    const matchPriority =
+      filterPriority === 'ALL' || ticket.priority === filterPriority;
     const matchQuery =
       ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchStatus && matchQuery;
+      ticket.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.authorName.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchStatus && matchCategory && matchPriority && matchQuery;
   });
 
   return (
-    <div className="ticket-table-wrapper">
-      {/* Bar Filter & Pencarian */}
-      <div className="table-controls">
-        <div className="search-box">
+    <div className="ticket-table-container">
+      {/* Functional Filter Toolbar */}
+      <div className="table-toolbar">
+        <div className="search-field-wrapper">
+          <Search size={14} className="search-icon" />
           <input
             type="text"
-            placeholder="Cari ID, judul, atau kategori..."
+            placeholder="Cari ID tiket, judul, deskripsi, atau pelapor..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="input-search"
+            className="search-input"
             aria-label="Cari tiket"
           />
         </div>
 
-        <div className="filter-group">
-          <label htmlFor="status-filter" className="filter-label">
-            Filter Status:
-          </label>
-          <select
-            id="status-filter"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="select-filter"
-          >
-            <option value="ALL">Semua Status ({tickets.length})</option>
-            <option value="Open">Open (Aktif)</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Resolved">Resolved (Selesai)</option>
-          </select>
+        <div className="filter-controls-group">
+          {/* Filter Status */}
+          <div className="select-wrapper">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="filter-select"
+              aria-label="Filter Status"
+            >
+              <option value="ALL">Status: Semua</option>
+              <option value="OPEN">OPEN</option>
+              <option value="IN_PROGRESS">IN_PROGRESS</option>
+              <option value="RESOLVED">RESOLVED</option>
+            </select>
+          </div>
+
+          {/* Filter Kategori */}
+          <div className="select-wrapper">
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="filter-select"
+              aria-label="Filter Kategori"
+            >
+              <option value="ALL">Kategori: Semua</option>
+              {TICKET_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Filter Prioritas */}
+          <div className="select-wrapper">
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              className="filter-select"
+              aria-label="Filter Prioritas"
+            >
+              <option value="ALL">Urgensi: Semua</option>
+              <option value="HIGH">HIGH</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LOW">LOW</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Conditional Rendering: Tampilkan Empty State jika data kosong (Kriteria B3) */}
+      {/* Semantic Table or Functional Empty State */}
       {filteredTickets.length === 0 ? (
         <div className="empty-state-box">
-          <div className="empty-icon">📭</div>
-          <h3 className="empty-title">Belum Ada Data Tiket</h3>
+          <div className="empty-icon-wrap">
+            <Inbox size={28} strokeWidth={1.7} />
+          </div>
+          <h3 className="empty-title">Tidak Ada Tiket Ditemukan</h3>
           <p className="empty-text">
-            {searchQuery || filterStatus !== 'ALL'
-              ? 'Tidak ada tiket yang cocok dengan filter atau kata kunci pencarian Anda.'
-              : 'Belum ada tiket keluhan yang tercatat di dalam sistem.'}
+            {searchQuery || filterStatus !== 'ALL' || filterCategory !== 'ALL' || filterPriority !== 'ALL'
+              ? 'Tidak ada tiket yang sesuai dengan parameter filter atau pencarian Anda.'
+              : 'Belum ada tiket yang terdaftar dalam antrean sistem.'}
           </p>
         </div>
       ) : (
-        /* Semantic Table */
-        <div className="table-responsive">
-          <table className="custom-table">
+        <div className="table-scroll-container">
+          <table className="data-table">
             <thead>
               <tr>
-                <th scope="col" style={{ width: '90px' }}>ID</th>
-                <th scope="col">Judul Kendala</th>
-                <th scope="col">Kategori</th>
-                <th scope="col" style={{ width: '100px' }}>Prioritas</th>
-                <th scope="col">Pelapor</th>
+                <th scope="col" style={{ width: '95px' }}>ID Tiket</th>
+                <th scope="col">Rincian Kendala</th>
+                <th scope="col" style={{ width: '130px' }}>Kategori</th>
+                <th scope="col" style={{ width: '100px' }}>Urgensi</th>
+                <th scope="col" style={{ width: '180px' }}>Pelapor</th>
                 <th scope="col" style={{ width: '130px' }}>Status</th>
-                {isAdmin && <th scope="col" style={{ width: '160px' }}>Ubah Status</th>}
+                {isAdmin && <th scope="col" style={{ width: '150px' }}>Alokasi Status</th>}
               </tr>
             </thead>
             <tbody>
-              {/* Looping array dengan .map() dan unique key (Kriteria B3) */}
               {filteredTickets.map((ticket) => (
-                <tr key={ticket.id} className="ticket-row">
+                <tr key={ticket.id} className="data-row">
                   <td className="cell-id">
-                    <span className="id-badge">{ticket.id}</span>
+                    <code className="ticket-id-code">{ticket.id}</code>
                   </td>
-                  <td className="cell-title">
-                    <strong className="ticket-title">{ticket.title}</strong>
-                    <p className="ticket-desc-preview">{ticket.description}</p>
-                    <span className="ticket-date">📅 {ticket.createdAt}</span>
+                  <td className="cell-details">
+                    <span className="row-title">{ticket.title}</span>
+                    <p className="row-desc">{ticket.description}</p>
+                    <div className="row-meta">
+                      <Calendar size={11} strokeWidth={2} />
+                      <span>{ticket.createdAt}</span>
+                    </div>
                   </td>
                   <td className="cell-category">
-                    <span className="category-tag">{ticket.category}</span>
+                    <span className="category-pill">{ticket.category}</span>
                   </td>
                   <td className="cell-priority">
-                    <span className={`priority-badge priority-${ticket.priority.toLowerCase()}`}>
+                    <span className={`badge-priority priority-${ticket.priority.toLowerCase()}`}>
                       {ticket.priority}
                     </span>
                   </td>
-                  <td className="cell-author">
-                    <span className="author-name">{ticket.authorName}</span>
-                    <small className="author-user">@{ticket.authorUsername}</small>
+                  <td className="cell-reporter">
+                    <span className="reporter-name">{ticket.authorName}</span>
+                    <span className="reporter-dept">ID: {ticket.authorUsername}</span>
                   </td>
                   <td className="cell-status">
-                    <span
-                      className={`status-pill status-${ticket.status.toLowerCase().replace(' ', '-')}`}
-                    >
+                    <span className={`badge-status status-${ticket.status.toLowerCase().replace('_', '-')}`}>
                       {ticket.status}
                     </span>
                   </td>
-
-                  {/* Fitur Aksi Khusus Admin untuk Mengubah Status (Demonstrasi State Lifting) */}
                   {isAdmin && (
-                    <td className="cell-action">
+                    <td className="cell-actions">
                       <select
                         value={ticket.status}
                         onChange={(e) => onStatusChange(ticket.id, e.target.value)}
-                        className="select-status-action"
-                        aria-label={`Ubah status tiket ${ticket.id}`}
+                        className="status-action-select"
+                        aria-label={`Ubah status ${ticket.id}`}
                       >
-                        <option value="Open">Open</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
+                        <option value="OPEN">OPEN</option>
+                        <option value="IN_PROGRESS">IN_PROGRESS</option>
+                        <option value="RESOLVED">RESOLVED</option>
                       </select>
                     </td>
                   )}

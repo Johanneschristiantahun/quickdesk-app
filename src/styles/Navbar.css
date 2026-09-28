@@ -1,17 +1,18 @@
-/* src/styles/Navbar.css */
+/* src/styles/Navbar.css - Enterprise Human-Grade */
+
 .site-header {
   background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
 .header-container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,24 +28,33 @@
 }
 
 .brand-icon {
-  width: 34px;
-  height: 34px;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  width: 32px;
+  height: 32px;
+  background-color: #0f172a;
   color: #ffffff;
-  font-weight: 800;
-  font-size: 18px;
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.brand-text-block {
+  display: flex;
+  flex-direction: column;
 }
 
 .brand-name {
-  font-size: 19px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .main-nav {
@@ -55,105 +65,115 @@
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 8px;
+  gap: 4px;
   margin: 0;
   padding: 0;
 }
 
 .nav-link {
-  display: inline-block;
-  padding: 8px 14px;
-  font-size: 14px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
   color: #475569;
   text-decoration: none;
   border-radius: 6px;
-  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
 }
 
 .nav-link:hover {
-  color: #2563eb;
-  background-color: #f1f5f9;
+  color: #0f172a;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
 }
 
 .nav-link.active {
-  color: #2563eb;
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
+  color: #0f172a;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  font-weight: 600;
 }
 
 .user-profile-section {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  gap: 2px;
 }
 
 .user-name {
-  font-size: 13.5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
   font-weight: 700;
-  color: #1e293b;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  line-height: 1;
 }
 
-.role-badge {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+.role-admin {
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #0f172a;
 }
 
-.badge-admin {
-  background-color: #fef3c7;
-  color: #b45309;
-  border: 1px solid #fde68a;
-}
-
-.badge-user {
-  background-color: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+.role-user {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
 }
 
 .btn-logout {
-  background-color: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fca5a5;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
+  font-size: 12.5px;
+  padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-logout:hover {
-  background-color: #fecaca;
-  color: #991b1b;
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
-/* Responsiveness for mobile screen width (~375px) */
 @media (max-width: 680px) {
   .header-container {
-    padding: 10px 14px;
+    padding: 8px 14px;
   }
   .main-nav {
     order: 3;
     width: 100%;
     overflow-x: auto;
-    padding-top: 6px;
+    padding-top: 8px;
     border-top: 1px solid #f1f5f9;
   }
-  .user-profile-section {
-    gap: 8px;
-  }
   .user-info {
-    display: none; /* Hemat ruang di layar HP kecil */
+    display: none;
   }
 }

@@ -3,36 +3,24 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTickets } from '../context/TicketContext';
 import { TICKET_CATEGORIES, TICKET_PRIORITIES } from '../data/mockData';
+import { FilePlus, AlertCircle, ChevronRight, Check } from 'lucide-react';
 import '../styles/Form.css';
 
-/**
- * Halaman Form Pengajuan Tiket Kendala Baru
- * Sesuai Kriteria Rubrik B4:
- * - All inputs controlled (value + onChange)
- * - Submit uses e.preventDefault()
- * - Validation with clear error messages
- * - The form implements the modeled use case (UC-03)
- */
 export default function CreateTicketPage() {
   const { currentUser } = useAuth();
   const { addTicket } = useTickets();
   const navigate = useNavigate();
 
-  // 1. State Input Formulir Terkontrol (Controlled Inputs)
   const [formData, setFormData] = useState({
     title: '',
     category: '',
-    priority: 'Medium',
+    priority: 'MEDIUM',
     description: ''
   });
 
-  // 2. State untuk Menyimpan Pesan Error Validasi
   const [errors, setErrors] = useState({});
-
-  // 3. State Notifikasi Loading / Submission
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handler Perubahan Input Bersama
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -40,7 +28,6 @@ export default function CreateTicketPage() {
       [name]: value
     }));
 
-    // Hapus pesan error pada field yang sedang diketik
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -49,74 +36,59 @@ export default function CreateTicketPage() {
     }
   };
 
-  /**
-   * Fungsi Validasi Formulir Komprehensif
-   * Sesuai Skenario Use Case UC-03 & Rubrik B4
-   * @returns {boolean} true jika valid, false jika ada error
-   */
   const validateForm = () => {
     const newErrors = {};
 
-    // Validasi Judul
     if (!formData.title.trim()) {
-      newErrors.title = 'Judul kendala wajib diisi!';
+      newErrors.title = 'Judul kendala wajib diisi.';
     } else if (formData.title.trim().length < 5) {
-      newErrors.title = 'Judul kendala terlalu pendek (minimal 5 karakter).';
+      newErrors.title = 'Judul terlalu pendek (minimal 5 karakter).';
     }
 
-    // Validasi Kategori
     if (!formData.category) {
-      newErrors.category = 'Silakan pilih kategori kendala dari daftar!';
+      newErrors.category = 'Silakan tentukan kategori kendala.';
     }
 
-    // Validasi Prioritas
     if (!formData.priority) {
-      newErrors.priority = 'Silakan pilih tingkat urgensi kendala!';
+      newErrors.priority = 'Silakan tentukan tingkat urgensi.';
     }
 
-    // Validasi Deskripsi
     if (!formData.description.trim()) {
-      newErrors.description = 'Deskripsi lengkap kendala wajib diisi!';
+      newErrors.description = 'Deskripsi teknis kendala wajib diisi.';
     } else if (formData.description.trim().length < 10) {
-      newErrors.description = 'Deskripsi terlalu singkat. Jelaskan masalah minimal 10 karakter.';
+      newErrors.description = 'Deskripsi minimal 10 karakter untuk kejelasan teknisi.';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handler Submit Formulir
   const handleSubmit = (e) => {
-    e.preventDefault(); // MENCEGAH PERILAKU DEFAULT BROWSER RELOAD (Kriteria B4)
+    e.preventDefault();
 
-    // Lakukan validasi
     if (!validateForm()) {
-      return; // Berhenti jika ada field yang belum valid
+      return;
     }
 
     setIsSubmitting(true);
 
-    // Simulasikan delay proses submit (opsional agar UX lebih natural)
     setTimeout(() => {
-      // Simpan tiket baru ke state terpusat (Lifting State Up - Kriteria B5)
       const createdTicket = addTicket(formData, currentUser);
       setIsSubmitting(false);
 
-      // Arahkan otomatis ke halaman Output / Riwayat Tiket
       navigate('/my-tickets', {
         state: {
-          successMessage: `Tiket ${createdTicket.id} berhasil diajukan dan disimpan ke sistem!`
+          successMessage: `Tiket ${createdTicket.id} berhasil dicatat dalam antrean penanganan sistem.`
         }
       });
-    }, 300);
+    }, 250);
   };
 
-  // Handler Reset Form
   const handleReset = () => {
     setFormData({
       title: '',
       category: '',
-      priority: 'Medium',
+      priority: 'MEDIUM',
       description: ''
     });
     setErrors({});
@@ -124,60 +96,68 @@ export default function CreateTicketPage() {
 
   return (
     <div className="form-page-container">
-      {/* Breadcrumb Navigasi */}
-      <nav className="breadcrumb" aria-label="Breadcrumb">
+      {/* Semantic Breadcrumb */}
+      <nav className="breadcrumb-nav" aria-label="Breadcrumb">
         <Link to="/dashboard">Dashboard</Link>
-        <span className="separator">/</span>
-        <span className="current">Buat Tiket Baru</span>
+        <ChevronRight size={13} className="breadcrumb-divider" />
+        <span className="breadcrumb-current">Pengajuan Tiket</span>
       </nav>
 
-      <div className="form-card">
+      <div className="form-card-container">
         <div className="form-card-header">
-          <h1 className="form-title">📝 Formulir Pengajuan Tiket Keluhan IT</h1>
-          <p className="form-subtitle">
-            Lengkapi formulir di bawah ini dengan jelas agar teknisi IT Support dapat segera menindaklanjuti kendala Anda.
-          </p>
+          <div className="form-header-title-row">
+            <div className="form-icon-badge">
+              <FilePlus size={18} strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="form-heading">Formulir Pengajuan Tiket Kendala</h1>
+              <p className="form-subheading">
+                Lengkapi rincian kendala teknis berikut dengan jelas untuk proses tindak lanjut oleh tim operasional IT.
+              </p>
+            </div>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="ticket-form" noValidate>
-          {/* Field 1: Judul Masalah */}
-          <div className={`form-group ${errors.title ? 'has-error' : ''}`}>
-            <label htmlFor="field-title" className="form-label">
-              Judul Kendala Masalah <span className="required-star">*</span>
+          {/* Field 1: Judul Kendala */}
+          <div className={`form-field ${errors.title ? 'field-error' : ''}`}>
+            <label htmlFor="ticket-title" className="field-label">
+              Judul Kendala Masalah <span className="mark-required">*</span>
             </label>
             <input
-              id="field-title"
+              id="ticket-title"
               name="title"
               type="text"
-              className="form-input"
-              placeholder="Contoh: PC Lab 2 Tombol Power Tidak Merespons"
+              className="field-input"
+              placeholder="Contoh: Workstation PC 04 Mengalami Layar Bergaris"
               value={formData.title}
               onChange={handleChange}
               aria-invalid={!!errors.title}
-              aria-describedby={errors.title ? 'title-error' : undefined}
+              aria-describedby={errors.title ? 'error-title' : undefined}
             />
             {errors.title && (
-              <span id="title-error" className="field-error-text">
-                ⚠️ {errors.title}
+              <span id="error-title" className="error-message">
+                <AlertCircle size={13} strokeWidth={2} />
+                <span>{errors.title}</span>
               </span>
             )}
           </div>
 
-          <div className="form-row-two-cols">
-            {/* Field 2: Kategori Dropdown */}
-            <div className={`form-group ${errors.category ? 'has-error' : ''}`}>
-              <label htmlFor="field-category" className="form-label">
-                Kategori Masalah <span className="required-star">*</span>
+          <div className="form-two-columns">
+            {/* Field 2: Kategori */}
+            <div className={`form-field ${errors.category ? 'field-error' : ''}`}>
+              <label htmlFor="ticket-category" className="field-label">
+                Kategori Masalah <span className="mark-required">*</span>
               </label>
               <select
-                id="field-category"
+                id="ticket-category"
                 name="category"
-                className="form-select"
+                className="field-select"
                 value={formData.category}
                 onChange={handleChange}
                 aria-invalid={!!errors.category}
               >
-                <option value="">-- Pilih Kategori Kendala --</option>
+                <option value="">-- Pilih Kategori --</option>
                 {TICKET_CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
@@ -185,76 +165,87 @@ export default function CreateTicketPage() {
                 ))}
               </select>
               {errors.category && (
-                <span className="field-error-text">⚠️ {errors.category}</span>
+                <span className="error-message">
+                  <AlertCircle size={13} strokeWidth={2} />
+                  <span>{errors.category}</span>
+                </span>
               )}
             </div>
 
-            {/* Field 3: Tingkat Urgensi */}
-            <div className={`form-group ${errors.priority ? 'has-error' : ''}`}>
-              <label htmlFor="field-priority" className="form-label">
-                Tingkat Urgensi / Prioritas <span className="required-star">*</span>
+            {/* Field 3: Urgensi */}
+            <div className={`form-field ${errors.priority ? 'field-error' : ''}`}>
+              <label htmlFor="ticket-priority" className="field-label">
+                Tingkat Urgensi <span className="mark-required">*</span>
               </label>
               <select
-                id="field-priority"
+                id="ticket-priority"
                 name="priority"
-                className="form-select"
+                className="field-select"
                 value={formData.priority}
                 onChange={handleChange}
               >
                 {TICKET_PRIORITIES.map((prio) => (
                   <option key={prio} value={prio}>
-                    {prio} {prio === 'High' ? '(Mendesak / Darurat)' : prio === 'Low' ? '(Bisa Menunggu)' : '(Standar)'}
+                    {prio} {prio === 'HIGH' ? '(Kritis / Menghentikan Operasional)' : prio === 'LOW' ? '(Bisa Dijadwalkan)' : '(Standar Operasional)'}
                   </option>
                 ))}
               </select>
               {errors.priority && (
-                <span className="field-error-text">⚠️ {errors.priority}</span>
+                <span className="error-message">
+                  <AlertCircle size={13} strokeWidth={2} />
+                  <span>{errors.priority}</span>
+                </span>
               )}
             </div>
           </div>
 
-          {/* Field 4: Deskripsi Rinci */}
-          <div className={`form-group ${errors.description ? 'has-error' : ''}`}>
-            <label htmlFor="field-description" className="form-label">
-              Rincian Deskripsi Masalah &amp; Lokasi <span className="required-star">*</span>
+          {/* Field 4: Deskripsi Teknis */}
+          <div className={`form-field ${errors.description ? 'field-error' : ''}`}>
+            <label htmlFor="ticket-description" className="field-label">
+              Rincian Deskripsi Masalah &amp; Lokasi <span className="mark-required">*</span>
             </label>
             <textarea
-              id="field-description"
+              id="ticket-description"
               name="description"
               rows={4}
-              className="form-textarea"
-              placeholder="Jelaskan detail kendala, nomor ruangan/gedung, kode perangkat, serta langkah yang sudah dicoba..."
+              className="field-textarea"
+              placeholder="Deskripsikan ruangan/gedung, kode perangkat, serta langkah percobaan pemecahan masalah yang telah dilakukan..."
               value={formData.description}
               onChange={handleChange}
               aria-invalid={!!errors.description}
             />
-            {errors.description && (
-              <span className="field-error-text">⚠️ {errors.description}</span>
+            {errors.description ? (
+              <span className="error-message">
+                <AlertCircle size={13} strokeWidth={2} />
+                <span>{errors.description}</span>
+              </span>
+            ) : (
+              <span className="field-helper">
+                Panjang karakter: {formData.description.trim().length} (Minimal 10 karakter)
+              </span>
             )}
-            <small className="field-hint">
-              Karakter: {formData.description.trim().length} (Minimal 10 karakter)
-            </small>
           </div>
 
-          {/* Action Buttons */}
-          <div className="form-actions-bar">
+          {/* Action Button Row */}
+          <div className="form-action-row">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-submit-primary"
+              className="btn-submit-action"
             >
-              {isSubmitting ? 'Sedang Mengirim...' : '🚀 Kirim Laporan Tiket'}
+              <Check size={15} strokeWidth={2.2} />
+              <span>{isSubmitting ? 'Merekam Tiket...' : 'Simpan & Ajukan Tiket'}</span>
             </button>
 
             <button
               type="button"
               onClick={handleReset}
-              className="btn-reset-secondary"
+              className="btn-secondary-action"
             >
-              Reset Form
+              Reset Isian
             </button>
 
-            <Link to="/dashboard" className="btn-cancel-link">
+            <Link to="/dashboard" className="btn-cancel-action">
               Batal
             </Link>
           </div>

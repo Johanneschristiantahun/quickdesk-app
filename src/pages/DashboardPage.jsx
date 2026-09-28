@@ -4,104 +4,111 @@ import { useAuth } from '../context/AuthContext';
 import { useTickets } from '../context/TicketContext';
 import StatCard from '../components/StatCard';
 import TicketTable from '../components/TicketTable';
+import { 
+  Layers, 
+  Clock, 
+  Activity, 
+  CheckCircle2, 
+  PlusCircle, 
+  ShieldCheck, 
+  User as UserIcon 
+} from 'lucide-react';
 import '../styles/Dashboard.css';
 
-/**
- * Halaman Dashboard Utama
- * Sesuai Kriteria Rubrik:
- * - B3: Content differs per role; data rendered from an array with map() and unique keys; conditional rendering; has an empty state ("no data yet")
- * - C1: Modular component usage (StatCard, TicketTable) via props
- */
 export default function DashboardPage() {
   const { currentUser, isAdmin } = useAuth();
-  const { tickets, updateTicketStatus, resetToDefault } = useTickets();
+  const { tickets, updateTicketStatus } = useTickets();
 
-  // Tentukan tiket yang ditampilkan berdasarkan role (Kriteria B3: Differs per role)
-  // IT Admin melihat semua tiket kampus, User melihat tiket miliknya sendiri
+  // Filter tiket sesuai hak akses (Admin melihat seluruh antrean kampus, User melihat tiket miliknya)
   const visibleTickets = isAdmin
     ? tickets
     : tickets.filter((t) => t.authorUsername === currentUser.username);
 
-  // Perhitungan metrik ringkasan
+  // Perhitungan metrik kuantitatif
   const totalCount = visibleTickets.length;
-  const openCount = visibleTickets.filter((t) => t.status === 'Open').length;
-  const inProgressCount = visibleTickets.filter((t) => t.status === 'In Progress').length;
-  const resolvedCount = visibleTickets.filter((t) => t.status === 'Resolved').length;
+  const openCount = visibleTickets.filter((t) => t.status === 'OPEN').length;
+  const inProgressCount = visibleTickets.filter((t) => t.status === 'IN_PROGRESS').length;
+  const resolvedCount = visibleTickets.filter((t) => t.status === 'RESOLVED').length;
 
   return (
-    <div className="dashboard-page">
-      {/* Header Halaman */}
-      <div className="dashboard-header-bar">
-        <div>
-          <h1 className="page-title">
-            {isAdmin ? '🛡️ Dashboard Operasional IT Admin' : `👋 Selamat Datang, ${currentUser.name}`}
+    <div className="dashboard-container">
+      {/* Enterprise Header Section */}
+      <div className="page-header-block">
+        <div className="header-meta">
+          <div className="header-badge-row">
+            <span className="system-pill">
+              {isAdmin ? (
+                <>
+                  <ShieldCheck size={12} strokeWidth={2.2} />
+                  <span>MODE ADMINISTRATOR</span>
+                </>
+              ) : (
+                <>
+                  <UserIcon size={12} strokeWidth={2.2} />
+                  <span>PORTAL PENGGUNA</span>
+                </>
+              )}
+            </span>
+          </div>
+          <h1 className="page-heading">
+            {isAdmin ? 'Pusat Operasional IT Helpdesk' : 'Dashboard Layanan Kendala IT'}
           </h1>
-          <p className="page-subtitle">
+          <p className="page-subheading">
             {isAdmin
-              ? 'Pantau antrean seluruh laporan kendala teknis kampus dan perbarui status penanganannya.'
-              : 'Pantau status tiket perbaikan IT yang telah Anda ajukan.'}
+              ? 'Monitoring real-time antrean tiket kendala teknis dan pembaruan alokasi penanganan.'
+              : 'Status pemantauan tiket laporan teknis yang Anda ajukan di dalam sistem.'}
           </p>
         </div>
 
-        <div className="dashboard-actions">
-          {/* Tombol Buat Tiket untuk Role User */}
+        <div className="header-actions">
           {!isAdmin && (
-            <Link to="/create-ticket" className="btn-create-ticket">
-              + Ajukan Tiket Baru
+            <Link to="/create-ticket" className="btn-action-primary">
+              <PlusCircle size={15} strokeWidth={2} />
+              <span>Ajukan Tiket Baru</span>
             </Link>
           )}
-
-          {/* Tombol Reset Data Demo (Fitur Tambahan untuk Presentasi) */}
-          <button
-            type="button"
-            onClick={resetToDefault}
-            className="btn-reset-data"
-            title="Kembalikan data tiket ke kondisi default"
-          >
-            🔄 Reset Data Demo
-          </button>
         </div>
       </div>
 
-      {/* Grid Kartu Metrik Statistik (Reusable StatCard Props) */}
-      <section className="stat-cards-grid" aria-label="Ringkasan Statistik">
+      {/* Metric Stat Cards Grid */}
+      <section className="metrics-grid" aria-label="Metrik Operasional">
         <StatCard
-          title={isAdmin ? 'TOTAL TIKET KAMPUS' : 'TOTAL TIKET SAYA'}
+          title={isAdmin ? 'TOTAL TIKET KAMPUS' : 'TIKET DIAJUKAN'}
           value={totalCount}
-          icon="📊"
-          variant="primary"
-          subtitle="Semua laporan tercatat"
+          icon={<Layers size={18} strokeWidth={2} />}
+          subtitle="Total catatan dalam sistem"
         />
         <StatCard
-          title="MENUNGGU (OPEN)"
+          title="STATUS OPEN"
           value={openCount}
-          icon="⏳"
-          variant="warning"
-          subtitle="Belum ditangani teknisi"
+          icon={<Clock size={18} strokeWidth={2} />}
+          subtitle="Menunggu antrean teknisi"
         />
         <StatCard
-          title="SEDANG DIKERJAKAN"
+          title="STATUS IN_PROGRESS"
           value={inProgressCount}
-          icon="🛠️"
-          variant="info"
-          subtitle="Teknisi sedang proses"
+          icon={<Activity size={18} strokeWidth={2} />}
+          subtitle="Sedang dalam proses perbaikan"
         />
         <StatCard
-          title="SUDAH SELESAI"
+          title="STATUS RESOLVED"
           value={resolvedCount}
-          icon="✅"
-          variant="success"
+          icon={<CheckCircle2 size={18} strokeWidth={2} />}
           subtitle="Kendala tuntas diselesaikan"
         />
       </section>
 
-      {/* Tabel Data Tiket dengan Filter, Pencarian, & Empty State */}
-      <section className="tickets-section">
-        <div className="section-header">
-          <h2 className="section-title">
-            {isAdmin ? 'Daftar Seluruh Tiket Masuk' : 'Daftar Tiket Keluhan Saya'}
-          </h2>
-          <span className="ticket-counter">Menampilkan {visibleTickets.length} tiket</span>
+      {/* Structured Operational Table Section */}
+      <section className="table-card-section" aria-label="Daftar Antrean Tiket">
+        <div className="table-card-header">
+          <div>
+            <h2 className="table-card-title">
+              {isAdmin ? 'Antrean Seluruh Tiket Layanan' : 'Daftar Tiket Kendala Saya'}
+            </h2>
+            <p className="table-card-desc">
+              Menampilkan {visibleTickets.length} rekaman data sesuai otorisasi akun.
+            </p>
+          </div>
         </div>
 
         <TicketTable

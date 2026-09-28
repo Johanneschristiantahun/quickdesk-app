@@ -1,35 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AlertTriangle, ArrowLeft } from 'lucide-react';
 
-/**
- * Halaman 404 Not Found
- * Sesuai Kriteria Rubrik B2:
- * "404 route; inner pages cannot be opened without logging in"
- */
 export default function NotFoundPage() {
   return (
-    <div className="not-found-container" style={{ textAlign: 'center', padding: '80px 20px' }}>
-      <div style={{ fontSize: '72px', marginBottom: '16px' }}>🔍 404</div>
-      <h1 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
-        Halaman Tidak Ditemukan
+    <div style={{ textAlign: 'center', padding: '90px 20px', maxWidth: '480px', margin: '0 auto' }}>
+      <div style={{ display: 'inline-flex', padding: '12px', borderRadius: '8px', backgroundColor: '#f1f5f9', color: '#475569', marginBottom: '16px' }}>
+        <AlertTriangle size={32} strokeWidth={1.8} />
+      </div>
+      <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#0f172a', marginBottom: '6px' }}>
+        404 — Halaman Tidak Ditemukan
       </h1>
-      <p style={{ color: '#64748b', maxWidth: '500px', margin: '0 auto 26px', fontSize: '15px' }}>
-        Maaf, tautan atau alamat URL yang Anda masukkan tidak terdaftar di dalam sistem QuickDesk.
+      <p style={{ color: '#64748b', fontSize: '13px', lineHeight: 1.5, marginBottom: '22px' }}>
+        Alamat URL yang Anda tuju tidak terdaftar pada rute sistem QuickDesk atau telah dipindahkan.
       </p>
       <Link
         to="/dashboard"
         style={{
-          display: 'inline-block',
-          backgroundColor: '#2563eb',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          backgroundColor: '#0f172a',
           color: '#ffffff',
-          padding: '10px 22px',
-          borderRadius: '8px',
+          padding: '8px 16px',
+          borderRadius: '6px',
           textDecoration: 'none',
-          fontWeight: '700',
-          fontSize: '14px'
+          fontWeight: '600',
+          fontSize: '13px',
+          border: '1px solid #0f172a'
         }}
       >
-        Kembali ke Dashboard Utama
+        <ArrowLeft size={14} />
+        <span>Kembali ke Dashboard</span>
       </Link>
     </div>
   );
