@@ -5,7 +5,7 @@
 
 ---
 
-## 👥 Anggota Kelompok 12
+## Anggota Kelompok 12
 1. **Johannes Christian Tahun** (No. 25)
 2. **Aldrich Taqi Marvel** (No. 5)
 3. **Darren Christian Rapang** (No. 11)
@@ -13,7 +13,7 @@
 
 ---
 
-## 📌 Deskripsi & Cakupan Proyek
+## Deskripsi & Cakupan Proyek
 
 ### Apa yang Dilakukan oleh Aplikasi Ini (*What the app does*):
 * **Autentikasi Berbasis Peran (*Role-Based Authentication*)**: Mendukung minimal 2 peran dengan hak akses berbeda:
@@ -41,7 +41,7 @@
 
 ---
 
-## 🔑 Akun Demo Hardcoded (Untuk Pengujian & Presentasi)
+## Akun Demo Hardcoded (Untuk Pengujian & Presentasi)
 
 | Username | Password | Role / Peran | Nama Pengguna | Hak Akses Utama |
 | :--- | :--- | :--- | :--- | :--- |
@@ -51,7 +51,7 @@
 
 ---
 
-## 🛠️ Arsitektur & Struktur Folder Komponen
+## Arsitektur & Struktur Folder Komponen
 Sesuai kriteria Rubrik C1 (React component structure & modularity):
 
 ```
@@ -89,7 +89,7 @@ quickdesk-app/
 
 ---
 
-## 🚀 Panduan Menjalankan Proyek Secara Lokal
+## Panduan Menjalankan Proyek Secara Lokal
 
 1. **Clone repository ini:**
    ```bash
